@@ -1,44 +1,25 @@
 #include <stdio.h>
 #include <stdlib.h>
-#define MAX_STACK_SIZE 10000
 
 typedef int element;
 typedef struct {
-    element data[MAX_STACK_SIZE];
+    element* data;
+    int capacity;
     int top;
 } Stack;
 
 void init_stack(Stack* s);
+int is_empty(Stack* s);
+int is_full(Stack* s);
 void push(Stack* s, element item);
 element pop(Stack* s);
 element top(Stack* s);
-int is_empty(Stack* s);
-int is_full(Stack* s);
 int size(Stack* s);
 
 void init_stack(Stack* s) {
     s->top = -1;
-}
-
-void push(Stack* s, element item) {
-    if (is_full(s)) printf("Stack is full\n");
-    else s->data[++(s->top)] = item;
-}
-
-element pop(Stack* s) {
-    if (is_empty(s)) {
-        printf("Stack is empty\n");
-        exit(1);
-    }
-    else return s->data[(s->top)--];
-}
-
-element top(Stack* s) {
-    if (is_empty(s)) {
-        printf("Stack is empty\n");
-        exit(1);
-    }
-    else return s->data[s->top];
+    s->capacity = 1;
+    s->data = (element*)malloc(s->capacity * sizeof(element));
 }
 
 int is_empty(Stack* s) {
@@ -46,7 +27,31 @@ int is_empty(Stack* s) {
 }
 
 int is_full(Stack* s) {
-    return (s->top == (MAX_STACK_SIZE - 1));
+    return (s->top == s->capacity - 1);
+}
+
+void push(Stack* s, element item) {
+    if (is_full(s)) {
+        s->capacity += 1;
+        s->data = (element*)realloc(s->data, s->capacity * sizeof(element));
+    }
+    s->data[++(s->top)] = item;
+}
+
+element pop(Stack* s) {
+    if (is_empty(s)) {
+        printf("Stack is empty\n");
+        return -1;
+    }
+    else return s->data[(s->top)--];
+}
+
+element top(Stack* s) {
+    if (is_empty(s)) {
+        printf("Stack is empty\n");
+        return -1;
+    }
+    else return s->data[s->top];
 }
 
 int size(Stack* s) {
