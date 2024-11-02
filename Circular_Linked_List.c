@@ -2,7 +2,7 @@
 #include <stdlib.h>
 
 typedef int element;
-typedef struct Node{
+typedef struct Node {
     element data;
     struct Node* link;
 } Node;
@@ -24,15 +24,22 @@ int is_empty(LinkedList* L) {
 void insert(LinkedList* L, int pos, element item) {
     if (pos < 0 || pos > L->length) {
         printf("Invalid location\n");
-        return L;
+        return;
     }
     Node* node = (Node*)calloc(1, sizeof(Node));
     node->data = item;
-    if (pos == 0) {
-        node->link = L->head;
+    if (L->head == NULL) {
+        L->head = node;
+        L->head->link = node;
+    } else if (pos == 0) {
+        node->link = L->head->link;
+        L->head->link = node;
+    } else if (pos == L->length) {
+        node->link = L->head->link;
+        L->head->link = node;
         L->head = node;
     } else {
-        Node* pre = L->head;
+        Node* pre = L->head->link;
         for (int i = 0; i < pos - 1; i++) {
             pre = pre->link;
         }
@@ -53,14 +60,17 @@ void insert_last(LinkedList* L, element item) {
 void delete(LinkedList* L, int pos) {
     if (pos < 0 || pos >= L->length) {
         printf("Invalid location\n");
-        return L;
+        return;
     }
     Node* removed;
-    if (pos == 0) {
+    if (L->length == 1) {
         removed = L->head;
-        L->head = L->head->link;
+        L->head = NULL;
+    } else if (pos == 0) {
+        removed = L->head->link;
+        L->head->link = L->head->link->link;
     } else {
-        Node* pre = L->head;
+        Node* pre = L->head->link;
         for (int i = 0; i < pos - 1; i++) {
             pre = pre->link;
         }
@@ -83,8 +93,10 @@ element get_entry(LinkedList* L, int pos) {
     if (pos < 0 || pos >= L->length) {
         printf("Invalid location\n");
         return -1;
+    } else if (pos == L->length - 1) {
+        return L->head->data;
     } else {
-        Node* current = L->head;
+        Node* current = L->head->link;
         for (int i = 0; i < pos; i++) {
             current = current->link;
         }
@@ -97,8 +109,14 @@ int get_length(LinkedList* L) {
 }
 
 void print_list(LinkedList* L) {
-    for (Node* current = L->head; current != NULL; current = current->link) {
-        printf("%d -> ", current->data);
+    if (L->head == NULL) {
+        printf("NULL\n");
+    } else {
+        Node* current = L->head->link;
+        do {
+            printf("%d -> ", current->data);
+            current = current->link;
+        } while (current != L->head->link);
+        printf("Head\n");
     }
-    printf("NULL\n");
 }

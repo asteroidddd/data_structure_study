@@ -8,33 +8,21 @@ typedef struct {
     int top;
 } Stack;
 
-void init_stack(Stack* s);
-int is_empty(Stack* s);
-int is_full(Stack* s);
-void push(Stack* s, element item);
-element pop(Stack* s);
-element top(Stack* s);
-int size(Stack* s);
-
-void init_stack(Stack* s)
-{
+void init_stack(Stack* s) {
     s->top = -1;
     s->capacity = 1;
     s->data = (element*)malloc(s->capacity * sizeof(element));
 }
 
-int is_empty(Stack* s)
-{
+int is_empty(Stack* s) {
     return (s->top == -1);
 }
 
-int is_full(Stack* s)
-{
+int is_full(Stack* s) {
     return (s->top == s->capacity - 1);
 }
 
-void push(Stack* s, element item)
-{
+void push(Stack* s, element item) {
     if (is_full(s)) {
         s->capacity += 1;
         s->data = (element*)realloc(s->data, s->capacity * sizeof(element));
@@ -42,8 +30,7 @@ void push(Stack* s, element item)
     s->data[++(s->top)] = item;
 }
 
-element pop(Stack* s)
-{
+element pop(Stack* s) {
     if (is_empty(s)) {
         printf("Stack is empty\n");
         return -1;
@@ -52,8 +39,7 @@ element pop(Stack* s)
     }
 }
 
-element top(Stack* s)
-{
+element top(Stack* s) {
     if (is_empty(s)) {
         printf("Stack is empty\n");
         return -1;
@@ -62,8 +48,7 @@ element top(Stack* s)
     }
 }
 
-int size(Stack* s)
-{
+int size(Stack* s) {
     if (is_empty(s)) {
         return 0;
     } else {
