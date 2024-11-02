@@ -21,6 +21,10 @@ int is_empty(LinkedList* L) {
     return L->length == 0;
 }
 
+int get_length(LinkedList* L) {
+    return L->length;
+}
+
 void insert(LinkedList* L, int pos, element item) {
     if (pos < 0 || pos > L->length) {
         printf("Invalid location\n");
@@ -28,7 +32,7 @@ void insert(LinkedList* L, int pos, element item) {
     }
     Node* node = (Node*)calloc(1, sizeof(Node));
     node->data = item;
-    if (L->head == NULL) {
+    if (is_empty(L)) {
         L->head = node;
         L->head->link = node;
     } else if (pos == 0) {
@@ -39,8 +43,8 @@ void insert(LinkedList* L, int pos, element item) {
         L->head->link = node;
         L->head = node;
     } else {
-        Node* pre = L->head->link;
-        for (int i = 0; i < pos - 1; i++) {
+        Node* pre = L->head;
+        for (int i = 0; i < pos; i++) {
             pre = pre->link;
         }
         node->link = pre->link;
@@ -68,10 +72,10 @@ void delete(LinkedList* L, int pos) {
         L->head = NULL;
     } else if (pos == 0) {
         removed = L->head->link;
-        L->head->link = L->head->link->link;
+        L->head->link = removed->link;
     } else {
-        Node* pre = L->head->link;
-        for (int i = 0; i < pos - 1; i++) {
+        Node* pre = L->head;
+        for (int i = 0; i < pos; i++) {
             pre = pre->link;
         }
         removed = pre->link;
@@ -104,19 +108,15 @@ element get_entry(LinkedList* L, int pos) {
     }
 }
 
-int get_length(LinkedList* L) {
-    return L->length;
-}
-
 void print_list(LinkedList* L) {
-    if (L->head == NULL) {
+    if (is_empty(L)) {
         printf("NULL\n");
     } else {
         Node* current = L->head->link;
-        do {
+        for (int i = 0; i < L->length; i++) {
             printf("%d -> ", current->data);
             current = current->link;
-        } while (current != L->head->link);
-        printf("Head\n");
+        }
+        printf("First Node\n");
     }
 }

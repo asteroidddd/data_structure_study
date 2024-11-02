@@ -21,6 +21,10 @@ int is_empty(LinkedList* L) {
     return L->length == 0;
 }
 
+int get_length(LinkedList* L) {
+    return L->length;
+}
+
 void insert(LinkedList* L, int pos, element item) {
     if (pos < 0 || pos > L->length) {
         printf("Invalid location\n");
@@ -90,10 +94,6 @@ element get_entry(LinkedList* L, int pos) {
         }
         return current->data;
     }
-}
-
-int get_length(LinkedList* L) {
-    return L->length;
 }
 
 void print_list(LinkedList* L) {
