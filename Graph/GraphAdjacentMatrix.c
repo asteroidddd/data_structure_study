@@ -95,11 +95,12 @@ void BFS_mat(Graph* g, int v) {
     enqueue(&q, v);
     while (!is_empty(&q)) {
         v = dequeue(&q);
-        for (w = 0; w<g->n; w++)
-        if (g->adj_mat[v][w] && !visited[w]) {
-            visited[w] = 1;
-            printf("%d visited -> ", w);
-            enqueue(&q, w);
+        for (w = 0; w<g->n; w++) {
+            if (g->adj_mat[v][w] && !visited[w]) {
+                visited[w] = 1;
+                printf("%d visited -> ", w);
+                enqueue(&q, w);
+            }
         }
     }
     free(visited);
