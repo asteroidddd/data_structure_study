@@ -72,10 +72,9 @@ void insert_edge(Graph* g, int start, int end) {
 }
 
 void DFS_recursive(Graph* g, int v, int* visited) {
-    Node* w;
     visited[v] = 1;
     printf("vertex %d -> ", v);
-    for (w = g->adj_list[v]; w; w = w->next) {
+    for (Node* w = g->adj_list[v]; w; w = w->next) {
         if (!visited[w->vertex]) {
             DFS_recursive(g, w->vertex, visited);
         }
@@ -93,7 +92,6 @@ void DFS_list(Graph* g, int v) {
 }
 
 void BFS_list(Graph* g, int v) {
-    Node* w;
     Queue q;
     init_queue(&q);
     int* visited = (int*)malloc(sizeof(int)*g->n);
@@ -105,7 +103,7 @@ void BFS_list(Graph* g, int v) {
     enqueue(&q, v);
     while (!is_empty(&q)) {
         v = dequeue(&q);
-        for (w = g->adj_list[v]; w; w = w->next) {
+        for (Node* w = g->adj_list[v]; w; w = w->next) {
             if (!visited[w->vertex]) {
                 visited[w->vertex] = 1;
                 printf("%d visited -> ", w->vertex);
